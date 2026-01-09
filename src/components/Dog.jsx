@@ -1,24 +1,35 @@
-import { OrbitControls, useGLTF } from '@react-three/drei'
+import * as THREE from "three"
 import { Canvas, useThree } from '@react-three/fiber'
-import { color } from 'three/tsl'
-
+import { OrbitControls, useGLTF, useTexture } from '@react-three/drei'
 
 
 const Dog = () => {
 
-    const models = useGLTF("/models/dog.drc.glb")
+    const model = useGLTF("/models/dog.drc.glb")
 
     useThree(({ camera, scene, gl }) => {
-        console.log(camera.position)
         camera.position.z = 0.55
+    })
+
+    const textures = useTexture({
+        normalMap: "/dog_normals.jpg"
+    })
+
+
+    model.scene.traverse((el) => {
+        if (el.name.includes("DOG")) {
+            el.material = new THREE.MeshBasicMaterial({
+                normalMap: textures.normalMap
+            })
+        }
     })
 
     return (
         <>
 
-            <primitive object={models.scene} position={[0.25, -0.55, 0]}
+            <primitive object={model.scene} position={[0.25, -0.55, 0]}
                 rotation={[0, Math.PI / 5, 0]} />
-            <directionalLight position={[0, 5, 5]} color={0xfffff} intensity={10} />
+            <directionalLight position={[0, 5, 5]} color={0xffffff} intensity={10} />
             <OrbitControls />
 
         </>
