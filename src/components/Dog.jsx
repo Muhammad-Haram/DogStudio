@@ -9,10 +9,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 const Dog = () => {
 
-
     gsap.registerPlugin(useGSAP())
     gsap.registerPlugin(ScrollTrigger)
-
 
     useThree(({ camera, scene, gl }) => {
         camera.position.z = 0.55
